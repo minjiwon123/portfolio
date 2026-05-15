@@ -1,0 +1,321 @@
+import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+
+export default function PortfolioHomepage() {
+  const works = [
+    {
+      title: "HOWON UNIVERSITY SHORTFORM",
+      category: "Content Editing / Marketing",
+      desc: "Edited university shortform content in a Workman-style format with fast-paced entertainment-focused storytelling.",
+      date: "2025.12.16",
+    },
+    {
+      title: "PIXEL RHYTHM GAME",
+      category: "Unity Game Project",
+      desc: "Created a pixel-style rhythm game in Unity where a slime jumps over obstacles synchronized to music.",
+      date: "2025.12.14",
+    },
+    {
+      title: "AI MEDIA EXHIBITION",
+      category: "AI Visual / Exhibition",
+      desc: "Produced an AI-generated media exhibition work for Seoul Institute of the Arts Wave using AI-based video generation and After Effects.",
+      date: "2025.09.24",
+    },
+    {
+      title: "YETTOK & YEKKEUNG",
+      category: "Character Branding",
+      desc: "Designed original characters for a business model project, including branding visuals and physical mockups.",
+      date: "2024.11.30 – 2024.12.03",
+    },
+    {
+      title: "2D FRAME ANIMATION MV",
+      category: "Animation / Direction",
+      desc: "Directed, planned, and produced a full 2D frame animation music video as a graduation project.",
+      date: "2023.10.16",
+    },
+    {
+      title: "OIKAWA TOORU OPENING",
+      category: "Fan Animation Project",
+      desc: "Created an original Haikyuu opening sequence from Oikawa Tooru’s perspective inspired by Aoba Johsai.",
+      date: "2022.11.09",
+    },
+  ];
+
+  return (
+    <div className="cursor-default selection:bg-white selection:text-black">
+    <div className="bg-black text-white min-h-screen overflow-x-hidden font-sans relative">
+      <div className="fixed inset-0 pointer-events-none opacity-[0.04] mix-blend-screen bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      {/* NAV */}
+      <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-black/20 border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-lg tracking-[0.3em] font-light">MINJIWON</h1>
+          </div>
+
+          <nav className="hidden md:flex gap-10 text-sm tracking-widest text-white/70">
+            <a href="#about" className="hover:text-white transition">
+              ABOUT
+            </a>
+            <a href="#works" className="hover:text-white transition">
+              WORKS
+            </a>
+            <a href="#contact" className="hover:text-white transition">
+              CONTACT
+            </a>
+          </nav>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <section className="relative h-screen flex items-center justify-center px-6">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.15),transparent_60%)]" />
+        </div>
+
+        <div className="relative z-10 max-w-6xl w-full">
+          <div className="mb-10 overflow-hidden">
+            <p className="text-sm tracking-[0.5em] text-white/50 mb-6">
+              VISUAL / MOTION / INTERACTIVE
+            </p>
+
+            <h2 className="text-6xl md:text-8xl lg:text-[10rem] font-black leading-[0.9] tracking-tight">
+              DESIGN
+              <br />
+              EMOTION
+              <br />
+              EXPERIENCE
+            </h2>
+          </div>
+
+          <div className="max-w-xl ml-auto">
+            <p className="text-white/60 leading-relaxed text-base md:text-lg">
+              I design immersive experiences that connect emotion,
+              interaction, and visual storytelling.
+            </p>
+          </div>
+        </div>
+
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/40 text-sm tracking-[0.3em] animate-bounce">
+          SCROLL
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section
+        id="about"
+        className="border-t border-white/10 px-6 py-32"
+      >
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20">
+          <div>
+            <p className="text-sm tracking-[0.4em] text-white/40 mb-6">
+              ABOUT
+            </p>
+
+            <h3 className="text-4xl md:text-6xl font-bold leading-tight">
+              Building
+              <br />
+              emotional
+              <br />
+              interfaces.
+            </h3>
+          </div>
+
+          <div className="space-y-10">
+            <p className="text-white/70 leading-loose text-lg">
+              콘텐츠 마케팅의 구조적 사고와 시각 디자인의 감각을
+              결합하여 감정 기반 인터랙션을 설계합니다.
+            </p>
+
+            <div className="flex flex-wrap gap-3">
+              {[
+                "Interactive",
+                "Motion",
+                "Branding",
+                "Archive",
+                "Narrative",
+                "Emotion",
+              ].map((tag) => (
+                <div
+                  key={tag}
+                  className="border border-white/20 rounded-full px-5 py-2 text-sm text-white/70"
+                >
+                  {tag}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WORKS */}
+      <section
+        className="relative h-[70vh] flex items-center justify-center overflow-hidden border-t border-white/10"
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-30"
+        >
+          <source src="https://cdn.coverr.co/videos/coverr-digital-animation-background-1560678662470?download=1080p" type="video/mp4" />
+        </video>
+
+        <div className="relative z-10 text-center px-6">
+          <p className="text-sm tracking-[0.5em] text-white/40 mb-6">
+            IMMERSIVE VISUAL ARCHIVE
+          </p>
+
+          <h2 className="text-5xl md:text-8xl font-black leading-[0.9] tracking-tight">
+            EMOTION
+            <br />
+            CAN BE
+            <br />
+            DESIGNED.
+          </h2>
+        </div>
+      </section>
+
+      <section
+        id="works"
+        className="border-t border-white/10 px-6 py-32"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-20">
+            <p className="text-sm tracking-[0.4em] text-white/40 mb-6">
+              SELECTED WORKS
+            </p>
+
+            <h3 className="text-4xl md:text-6xl font-bold">
+              Archive of
+              <br />
+              visual experiments.
+            </h3>
+          </div>
+
+          <div className="space-y-6">
+            {works.map((work, index) => (
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+              <div
+                key={index}
+                className="group border border-white/10 hover:border-white/40 transition-all duration-500 rounded-3xl overflow-hidden bg-white/[0.02] hover:bg-white/[0.04]"
+              >
+                <div className="grid md:grid-cols-2">
+                  <div className="relative min-h-[320px] overflow-hidden border-b md:border-b-0 md:border-r border-white/10 bg-white/[0.03] flex items-end p-8">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
+
+                    <div className="absolute inset-0 group-hover:scale-105 transition-transform duration-700 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_60%)]" />
+
+                    <div className="relative z-10">
+                      <p className="text-sm tracking-[0.3em] text-white/40 mb-3">
+                        PROJECT 0{index + 1}
+                      </p>
+
+                      <h4 className="text-3xl md:text-5xl font-black leading-[0.95]">
+                        {work.title}
+                      </h4>
+                    </div>
+                  </div>
+
+                  <div className="p-8 md:p-12 flex flex-col justify-between gap-10">
+                    <div className="grid md:grid-cols-2 gap-8">
+                  
+
+                  <div>
+                    <p className="text-white/50 text-sm tracking-[0.2em] mb-2">
+                      CATEGORY
+                    </p>
+                    <p className="text-lg">{work.category}</p>
+                  </div>
+
+                  <div>
+                    <p className="text-white/50 text-sm tracking-[0.2em] mb-2">
+                      DATE
+                    </p>
+                    <p className="text-lg">{work.date}</p>
+                  </div>
+
+                  <div className="md:col-span-2">
+                        <p className="text-white/60 leading-relaxed text-lg">
+                          {work.desc}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-6 border-t border-white/10">
+                      <button className="group/button flex items-center gap-3 text-sm tracking-[0.2em] text-white/70 hover:text-white transition">
+                        VIEW PROJECT
+                        <ArrowUpRight className="w-4 h-4 group-hover/button:translate-x-1 group-hover/button:-translate-y-1 transition-transform" />
+                      </button>
+
+                      <div className="text-white/20 text-5xl font-black">
+                        0{index + 1}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* VISUAL BANNER */}
+      <section className="relative py-40 overflow-hidden border-t border-white/10">
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:100px_100px]" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
+          <h2 className="text-5xl md:text-8xl font-black leading-none tracking-tight text-center">
+            PORTFOLIO
+            <br />
+            AS AN
+            <br />
+            EXPERIENCE
+          </h2>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section
+        id="contact"
+        className="border-t border-white/10 px-6 py-32"
+      >
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-end">
+          <div>
+            <p className="text-sm tracking-[0.4em] text-white/40 mb-6">
+              CONTACT
+            </p>
+
+            <h3 className="text-4xl md:text-7xl font-bold leading-[0.9]">
+              Let’s build
+              <br />
+              something
+              <br />
+              immersive.
+            </h3>
+          </div>
+
+          <div className="space-y-6 text-lg">
+            <p className="text-white/60">Email</p>
+            <p className="text-2xl font-semibold">yourmail@email.com</p>
+
+            <div className="pt-10 flex gap-4">
+              <button className="border border-white/20 px-8 py-4 rounded-full hover:bg-white hover:text-black transition-all duration-300">
+                Behance
+              </button>
+
+              <button className="border border-white/20 px-8 py-4 rounded-full hover:bg-white hover:text-black transition-all duration-300">
+                Instagram
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
