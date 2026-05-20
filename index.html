@@ -419,7 +419,7 @@
         background: var(--accent);
       }
 
-      /* --- WORKS GRID --- */
+      /* --- WORKS --- */
       .works-section {
         padding: 100px 60px 60px;
         background: var(--bg);
@@ -481,7 +481,6 @@
         justify-content: center;
       }
 
-      /* 기본 썸네일: cover */
       .wc-thumb img {
         width: 100%;
         height: 100%;
@@ -489,8 +488,6 @@
         position: absolute;
         inset: 0;
       }
-
-      /* 캐릭터, 타쿠 프로젝트 썸네일: contain */
       .work-card.is-char .wc-thumb img,
       .work-card.is-taku .wc-thumb img {
         object-fit: contain;
@@ -647,7 +644,6 @@
         object-fit: contain;
         position: absolute;
         inset: 0;
-        cursor: zoom-in; /* 확대 아이콘 */
       }
       .slider-btn {
         position: absolute;
@@ -774,6 +770,25 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
+      }
+      .btn-zoom {
+        font-family: 'Space Mono', monospace;
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        background: #1c1917;
+        color: #fff;
+        border: none;
+        padding: 12px 22px;
+        border-radius: 8px;
+        cursor: none;
+        transition: background 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .btn-zoom:hover {
+        background: #3a3531;
       }
       .btn-cl {
         font-family: 'Space Mono', monospace;
@@ -960,33 +975,83 @@
           grid-template-columns: 1fr;
         }
       }
-      /* --- LIGHTBOX --- */
+
+      /* --- FULLSCREEN LIGHTBOX SLIDER --- */
       .lightbox-ov {
         position: fixed;
         inset: 0;
         z-index: 1000;
-        background: rgba(0, 0, 0, 0.9);
+        background: #000;
         display: flex;
         align-items: center;
         justify-content: center;
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.3s;
-        overflow-y: auto; /* 스크롤 허용 */
       }
       .lightbox-ov.open {
         opacity: 1;
         pointer-events: all;
       }
-      .lightbox-ov img {
-        max-width: 95%;
-        max-height: 95%;
-        object-fit: contain;
-        transform: scale(0.95);
-        transition: transform 0.3s;
+      .lb-slider {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
       }
-      .lightbox-ov.open img {
-        transform: scale(1);
+      .lb-slides {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      }
+      .lb-slide {
+        min-width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+      }
+      .lb-slide img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        user-select: none;
+      }
+      .lb-close {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: #fff;
+        font-size: 20px;
+        cursor: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        z-index: 1010;
+      }
+      .lb-close:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+      .lb-count {
+        position: absolute;
+        top: 32px;
+        left: 40px;
+        font-family: 'Space Mono', monospace;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 0.1em;
+        z-index: 1010;
       }
     </style>
   </head>
@@ -1014,8 +1079,35 @@
         <button class="m-close" id="m-close">✕</button>
       </div>
     </div>
+
     <div class="lightbox-ov" id="lightbox-ov">
-      <img src="" alt="Lightbox" id="lightbox-img" />
+      <button class="lb-close" id="lb-close">✕</button>
+      <div class="lb-count" id="lb-count">1 / 1</div>
+      <div class="lb-slider" id="lb-slider">
+        <div class="lb-slides" id="lb-slides"></div>
+        <button
+          class="slider-btn slider-prev"
+          id="lb-prev"
+          style="
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+          "
+        >
+          ‹
+        </button>
+        <button
+          class="slider-btn slider-next"
+          id="lb-next"
+          style="
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+          "
+        >
+          ›
+        </button>
+      </div>
     </div>
 
     <nav>
@@ -1214,17 +1306,6 @@
         },
         {
           num: '06',
-          cat: 'Fan Animation',
-          date: '2022.11.09',
-          thumbImg: 'work06_1.jpg',
-          title: '하이큐!! 팬메이드\\n오프닝 애니메이션',
-          desc: '팬메이드 오프닝 프로젝트입니다.',
-          tags: ['Fan Art', 'Haikyuu!!', 'Opening'],
-          link: 'https://youtu.be/khuvqoxmW9Y',
-          stills: ['work06_1.jpg', 'work06_2.jpg', 'work06_3.jpg'],
-        },
-        {
-          num: '06',
           cat: 'Brand Identity',
           date: '2022.11.09',
           thumbImg: 'work06_1.png',
@@ -1234,7 +1315,7 @@
           link: null,
           isTaku: true,
           stills: ['work06_1.png', 'work06_2.png', 'work06_3.png'],
-        }, // isTaku 태그 추가
+        },
       ];
 
       /* --- RENDER --- */
@@ -1257,37 +1338,69 @@
         el.className =
           'work-card fade-up' +
           (w.isChar ? ' is-char' : '') +
-          (w.isTaku ? ' is-taku' : ''); // 타쿠 클래스 추가
+          (w.isTaku ? ' is-taku' : '');
         el.style.transitionDelay = i * 0.06 + 's';
         el.innerHTML = `<div class="wc-thumb"><img src="${w.thumbImg}" onerror="this.style.opacity='0.1';"><div class="wc-thumb-num">${w.num}</div><div class="wc-thumb-over"><span>자세히 보기</span></div></div><div class="wc-body"><div class="wc-cat">${w.cat}</div><div class="wc-title">${w.title.replace('\\n', '<br>')}<span class="wc-arr">→</span></div><div class="wc-date">${w.date}</div><div class="wc-tags">${w.tags.map((t) => `<span class="tag">${t}</span>`).join('')}</div></div>`;
         el.onclick = () => openModal(i);
         wg.appendChild(el);
       });
 
-      /* --- MODAL & SLIDER & LIGHTBOX JAVASCRIPT --- */
-      const lightboxOv = document.getElementById('lightbox-ov');
-      const lightboxImg = document.getElementById('lightbox-img');
+      /* --- MODAL & SLIDER & FULLSCREEN LIGHTBOX SLIDER JAVASCRIPT --- */
+      let curSlide = 0,
+        totalSlides = 1;
+      let curLbSlide = 0,
+        totalLbSlides = 1;
+      let activeProjectStills = [];
 
-      function openLightbox(src) {
-        lightboxImg.src = src;
+      const lightboxOv = document.getElementById('lightbox-ov');
+      const lbSlides = document.getElementById('lb-slides');
+      const lbCount = document.getElementById('lb-count');
+
+      // 풀스크린 슬라이더 오픈 엔진
+      function openLightboxSlider() {
+        lbSlides.innerHTML = '';
+        totalLbSlides = activeProjectStills.length;
+
+        activeProjectStills.forEach((src) => {
+          const slide = document.createElement('div');
+          slide.className = 'lb-slide';
+          slide.innerHTML = `<img src="${src}" onerror="this.style.opacity='0.2';">`;
+          lbSlides.appendChild(slide);
+        });
+
+        curLbSlide = curSlide; // 현재 작은 모달에서 보고 있던 슬라이드 인덱스를 그대로 연동
         lightboxOv.classList.add('open');
+        updateLbSliderUI();
       }
 
-      function closeLightbox() {
+      function closeLightboxSlider() {
         lightboxOv.classList.remove('open');
       }
 
-      lightboxOv.onclick = (e) => {
-        if (e.target.id === 'lightbox-ov' || e.target.id === 'lightbox-img') {
-          closeLightbox();
-        }
-      };
+      function goLbSlide(n) {
+        curLbSlide = (n + totalLbSlides) % totalLbSlides;
+        lbSlides.style.transform = `translateX(-${curLbSlide * 100}%)`;
+        updateLbSliderUI();
+      }
 
-      let curSlide = 0,
-        totalSlides = 1;
+      function updateLbSliderUI() {
+        lbCount.textContent = `${curLbSlide + 1} / ${totalLbSlides}`;
+      }
+
+      document.getElementById('lb-close').onclick = closeLightboxSlider;
+      document.getElementById('lb-prev').onclick = (e) => {
+        e.stopPropagation();
+        goLbSlide(curLbSlide - 1);
+      };
+      document.getElementById('lb-next').onclick = (e) => {
+        e.stopPropagation();
+        goLbSlide(curLbSlide + 1);
+      };
 
       function openModal(i) {
         const w = works[i];
+        activeProjectStills = w.stills; // 현재 선택된 프로젝트의 전체 이미지 저장
+
         document.getElementById('m-cat').textContent = w.cat;
         document.getElementById('m-title').innerHTML = w.title.replace(
           '\\n',
@@ -1314,7 +1427,11 @@
             s.innerHTML =
               "<div style='padding:40px;color:#fff;'>Image Error</div>";
           };
-          img.onclick = () => openLightbox(src); // 클릭 시 라이트박스 열기
+          // 작은 슬라이더 이미지를 클릭해도 풀스크린 슬라이더가 열리도록 지원
+          img.onclick = () => {
+            curSlide = j;
+            openLightboxSlider();
+          };
           s.appendChild(img);
           sl.appendChild(s);
 
@@ -1335,6 +1452,7 @@
 
         const ac = document.getElementById('m-actions');
         ac.innerHTML = '';
+
         if (w.link) {
           const a = document.createElement('a');
           a.href = w.link;
@@ -1343,6 +1461,14 @@
           a.innerHTML = '보러가기 ↗';
           ac.appendChild(a);
         }
+
+        // 모든 과제 및 프로젝트를 시원하게 전체 화면 슬라이드로 감상할 수 있는 [크게 보기 🔍] 액션 레이아웃 배치
+        const zoomBtn = document.createElement('button');
+        zoomBtn.className = 'btn-zoom';
+        zoomBtn.innerHTML = '크게 보기 🔍';
+        zoomBtn.onclick = openLightboxSlider;
+        ac.appendChild(zoomBtn);
+
         const cb = document.createElement('button');
         cb.className = 'btn-cl';
         cb.textContent = '닫기';
@@ -1380,6 +1506,21 @@
         if (e.target.id === 'modal-ov') closeModal();
       };
 
+      // 키보드 글로벌 방향키로 모달 및 라이트박스 제어 연동 규칙 최적화
+      document.addEventListener('keydown', (e) => {
+        if (lightboxOv.classList.contains('open')) {
+          if (e.key === 'Escape') closeLightboxSlider();
+          if (e.key === 'ArrowLeft') goLbSlide(curLbSlide - 1);
+          if (e.key === 'ArrowRight') goLbSlide(curLbSlide + 1);
+        } else if (
+          document.getElementById('modal-ov').classList.contains('open')
+        ) {
+          if (e.key === 'Escape') closeModal();
+          if (e.key === 'ArrowLeft') goSlide(curSlide - 1);
+          if (e.key === 'ArrowRight') goSlide(curSlide + 1);
+        }
+      });
+
       /* --- CURSOR & REVEAL --- */
       const cur = document.getElementById('cursor');
       const ring = document.getElementById('cursor-ring');
@@ -1405,10 +1546,9 @@
 
       document
         .querySelectorAll(
-          '.work-card, a, button, .profile-photo, .contact-item, .m-slide img',
+          '.work-card, a, button, .profile-photo, .contact-item, .m-slide img, #lb-prev, #lb-next, #lb-close',
         )
         .forEach((el) => {
-          // .m-slide img 에도 호버 효과 추가
           el.onmouseenter = () => ring.classList.add('expand');
           el.onmouseleave = () => ring.classList.remove('expand');
         });
