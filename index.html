@@ -419,7 +419,7 @@
         background: var(--accent);
       }
 
-      /* --- WORKS --- */
+      /* --- WORKS GRID --- */
       .works-section {
         padding: 100px 60px 60px;
         background: var(--bg);
@@ -481,6 +481,7 @@
         justify-content: center;
       }
 
+      /* 기본 썸네일: cover */
       .wc-thumb img {
         width: 100%;
         height: 100%;
@@ -488,7 +489,10 @@
         position: absolute;
         inset: 0;
       }
-      .work-card.is-char .wc-thumb img {
+
+      /* 캐릭터, 타쿠 프로젝트 썸네일: contain */
+      .work-card.is-char .wc-thumb img,
+      .work-card.is-taku .wc-thumb img {
         object-fit: contain;
         padding: 15px;
       }
@@ -643,6 +647,7 @@
         object-fit: contain;
         position: absolute;
         inset: 0;
+        cursor: zoom-in; /* 확대 아이콘 */
       }
       .slider-btn {
         position: absolute;
@@ -955,6 +960,34 @@
           grid-template-columns: 1fr;
         }
       }
+      /* --- LIGHTBOX --- */
+      .lightbox-ov {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        overflow-y: auto; /* 스크롤 허용 */
+      }
+      .lightbox-ov.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .lightbox-ov img {
+        max-width: 95%;
+        max-height: 95%;
+        object-fit: contain;
+        transform: scale(0.95);
+        transition: transform 0.3s;
+      }
+      .lightbox-ov.open img {
+        transform: scale(1);
+      }
     </style>
   </head>
   <body>
@@ -981,6 +1014,9 @@
         <button class="m-close" id="m-close">✕</button>
       </div>
     </div>
+    <div class="lightbox-ov" id="lightbox-ov">
+      <img src="" alt="Lightbox" id="lightbox-img" />
+    </div>
 
     <nav>
       <div class="nav-logo">Portfolio</div>
@@ -1005,7 +1041,7 @@
         </p>
         <div class="hero-stats">
           <div class="stat-item">
-            <div class="stat-n">6</div>
+            <div class="stat-n">6 project</div>
             <div class="stat-l">Projects</div>
           </div>
           <div class="stat-item">
@@ -1158,7 +1194,7 @@
           cat: 'Character Design',
           date: '2024.11.30',
           thumbImg: 'work04_1.png',
-          title: '예킁이\\n캐릭터 디자인',
+          title: '예똑이 & 예킁이\\n캐릭터 디자인',
           desc: '캐릭터 전신과 목업 이미지가 포함되어 있습니다.',
           tags: ['Character', 'Branding', 'Mockup'],
           link: null,
@@ -1178,15 +1214,27 @@
         },
         {
           num: '06',
+          cat: 'Fan Animation',
+          date: '2022.11.09',
+          thumbImg: 'work06_1.jpg',
+          title: '하이큐!! 팬메이드\\n오프닝 애니메이션',
+          desc: '팬메이드 오프닝 프로젝트입니다.',
+          tags: ['Fan Art', 'Haikyuu!!', 'Opening'],
+          link: 'https://youtu.be/khuvqoxmW9Y',
+          stills: ['work06_1.jpg', 'work06_2.jpg', 'work06_3.jpg'],
+        },
+        {
+          num: '06',
           cat: 'Brand Identity',
           date: '2022.11.09',
-          thumbImg: 'work06_1.png', // thumbImg 확장자를 .png로 변경
+          thumbImg: 'work06_1.png',
           title: '중고 굿즈 거래 플랫폼\\n— 타쿠 (TAKU)',
           desc: '시각디자인과 과제로 진행한 중고 굿즈 거래 플랫폼 브랜딩 프로젝트입니다.',
           tags: ['Branding', 'Visual Design', 'Identity'],
-          link: null, // 링크 제거
-          stills: ['work06_1.png', 'work06_2.png', 'work06_3.png'], // stills 확장자를 .png로 변경
-        },
+          link: null,
+          isTaku: true,
+          stills: ['work06_1.png', 'work06_2.png', 'work06_3.png'],
+        }, // isTaku 태그 추가
       ];
 
       /* --- RENDER --- */
@@ -1206,16 +1254,38 @@
       const wg = document.getElementById('work-grid');
       works.forEach((w, i) => {
         const el = document.createElement('div');
-        el.className = 'work-card fade-up' + (w.isChar ? ' is-char' : '');
+        el.className =
+          'work-card fade-up' +
+          (w.isChar ? ' is-char' : '') +
+          (w.isTaku ? ' is-taku' : ''); // 타쿠 클래스 추가
         el.style.transitionDelay = i * 0.06 + 's';
         el.innerHTML = `<div class="wc-thumb"><img src="${w.thumbImg}" onerror="this.style.opacity='0.1';"><div class="wc-thumb-num">${w.num}</div><div class="wc-thumb-over"><span>자세히 보기</span></div></div><div class="wc-body"><div class="wc-cat">${w.cat}</div><div class="wc-title">${w.title.replace('\\n', '<br>')}<span class="wc-arr">→</span></div><div class="wc-date">${w.date}</div><div class="wc-tags">${w.tags.map((t) => `<span class="tag">${t}</span>`).join('')}</div></div>`;
         el.onclick = () => openModal(i);
         wg.appendChild(el);
       });
 
-      /* --- MODAL --- */
+      /* --- MODAL & SLIDER & LIGHTBOX JAVASCRIPT --- */
+      const lightboxOv = document.getElementById('lightbox-ov');
+      const lightboxImg = document.getElementById('lightbox-img');
+
+      function openLightbox(src) {
+        lightboxImg.src = src;
+        lightboxOv.classList.add('open');
+      }
+
+      function closeLightbox() {
+        lightboxOv.classList.remove('open');
+      }
+
+      lightboxOv.onclick = (e) => {
+        if (e.target.id === 'lightbox-ov' || e.target.id === 'lightbox-img') {
+          closeLightbox();
+        }
+      };
+
       let curSlide = 0,
         totalSlides = 1;
+
       function openModal(i) {
         const w = works[i];
         document.getElementById('m-cat').textContent = w.cat;
@@ -1228,28 +1298,41 @@
         document.getElementById('m-tags').innerHTML = w.tags
           .map((t) => `<span class="tag">${t}</span>`)
           .join('');
-        const sl = document.getElementById('m-slides'),
-          dt = document.getElementById('sl-dots');
+
+        const sl = document.getElementById('m-slides');
+        const dt = document.getElementById('sl-dots');
         sl.innerHTML = '';
         dt.innerHTML = '';
         totalSlides = w.stills.length;
+
         w.stills.forEach((src, j) => {
           const s = document.createElement('div');
           s.className = 'm-slide';
-          s.innerHTML = `<img src="${src}" onerror="this.parentElement.innerHTML='<div style=\\'padding:40px;color:#fff;\\'>Image Error</div>'">`;
+          const img = document.createElement('img');
+          img.src = src;
+          img.onerror = () => {
+            s.innerHTML =
+              "<div style='padding:40px;color:#fff;'>Image Error</div>";
+          };
+          img.onclick = () => openLightbox(src); // 클릭 시 라이트박스 열기
+          s.appendChild(img);
           sl.appendChild(s);
+
           const d = document.createElement('div');
           d.className = 'sdot' + (j === 0 ? ' active' : '');
           d.onclick = () => goSlide(j);
           dt.appendChild(d);
         });
+
         curSlide = 0;
         sl.style.transform = 'translateX(0)';
         updateSlideUI();
+
         document.getElementById('sl-prev').style.display =
           totalSlides > 1 ? 'flex' : 'none';
         document.getElementById('sl-next').style.display =
           totalSlides > 1 ? 'flex' : 'none';
+
         const ac = document.getElementById('m-actions');
         ac.innerHTML = '';
         if (w.link) {
@@ -1265,15 +1348,18 @@
         cb.textContent = '닫기';
         cb.onclick = closeModal;
         ac.appendChild(cb);
+
         document.getElementById('modal-ov').classList.add('open');
         document.body.style.overflow = 'hidden';
       }
+
       function goSlide(n) {
         curSlide = (n + totalSlides) % totalSlides;
         document.getElementById('m-slides').style.transform =
           `translateX(-${curSlide * 100}%)`;
         updateSlideUI();
       }
+
       function updateSlideUI() {
         document.getElementById('sl-count').textContent =
           `${curSlide + 1} / ${totalSlides}`;
@@ -1281,8 +1367,10 @@
           .querySelectorAll('.sdot')
           .forEach((d, i) => d.classList.toggle('active', i === curSlide));
       }
+
       document.getElementById('sl-prev').onclick = () => goSlide(curSlide - 1);
       document.getElementById('sl-next').onclick = () => goSlide(curSlide + 1);
+
       function closeModal() {
         document.getElementById('modal-ov').classList.remove('open');
         document.body.style.overflow = '';
@@ -1293,18 +1381,20 @@
       };
 
       /* --- CURSOR & REVEAL --- */
-      const cur = document.getElementById('cursor'),
-        ring = document.getElementById('cursor-ring');
+      const cur = document.getElementById('cursor');
+      const ring = document.getElementById('cursor-ring');
       let mx = 0,
         my = 0,
         rx = 0,
         ry = 0;
+
       document.onmousemove = (e) => {
         mx = e.clientX;
         my = e.clientY;
         cur.style.left = mx + 'px';
         cur.style.top = my + 'px';
       };
+
       (function loop() {
         rx += (mx - rx) * 0.13;
         ry += (my - ry) * 0.13;
@@ -1312,12 +1402,17 @@
         ring.style.top = ry + 'px';
         requestAnimationFrame(loop);
       })();
+
       document
-        .querySelectorAll('.work-card,a,button,.profile-photo,.contact-item')
+        .querySelectorAll(
+          '.work-card, a, button, .profile-photo, .contact-item, .m-slide img',
+        )
         .forEach((el) => {
+          // .m-slide img 에도 호버 효과 추가
           el.onmouseenter = () => ring.classList.add('expand');
           el.onmouseleave = () => ring.classList.remove('expand');
         });
+
       const obs = new IntersectionObserver(
         (en) => {
           en.forEach((e) => {
@@ -1328,6 +1423,7 @@
         { threshold: 0.06 },
       );
       document.querySelectorAll('.fade-up').forEach((el) => obs.observe(el));
+
       document.getElementById('photo-upload').onchange = function () {
         if (!this.files[0]) return;
         document.getElementById('p-img-tag').src = URL.createObjectURL(
