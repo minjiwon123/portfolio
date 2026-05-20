@@ -118,9 +118,9 @@
         min-height: 100vh;
         display: grid;
         grid-template-columns: 1fr 400px;
-        padding: 100px 60px 60px;
+        padding: 140px 60px 60px;
         gap: 60px;
-        align-items: center;
+        align-items: start;
         position: relative;
         overflow: hidden;
       }
@@ -141,6 +141,8 @@
       }
       .hero-text {
         animation: fi 1s ease both;
+        position: sticky;
+        top: 140px;
       }
       @keyframes fi {
         from {
@@ -255,6 +257,7 @@
         overflow: hidden;
         cursor: pointer;
         transition: border-color 0.2s;
+        z-index: 1;
       }
       .profile-photo img {
         width: 100%;
@@ -925,31 +928,6 @@
         transform: translateY(0);
       }
 
-      @media (max-width: 1000px) {
-        .hero {
-          grid-template-columns: 1fr;
-          padding: 90px 24px 60px;
-        }
-        .hero-right {
-          display: none;
-        }
-        .work-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        .modal {
-          grid-template-columns: 1fr;
-        }
-        .m-slider {
-          min-height: 220px;
-        }
-        nav {
-          padding: 18px 24px;
-        }
-        .nav-links {
-          display: none;
-        }
-      }
-
       /* --- FULLSCREEN LIGHTBOX SLIDER --- */
       .lightbox-ov {
         position: fixed;
@@ -1017,6 +995,123 @@
         font-size: 14px;
         color: rgba(255, 255, 255, 0.6);
         z-index: 1010;
+      }
+
+      /* 📱 크리티컬 모바일 반응형 완벽 대응 맞춤 배치 규칙 보강 */
+      @media (max-width: 1000px) {
+        nav {
+          padding: 15px 24px;
+        }
+        .nav-links {
+          display: none;
+        } /* 모바일에서는 심플하게 탑 로고만 배치 */
+
+        /* 히어로 구조를 1열 세로 배열로 변경하여 콘텐츠 찌그러짐 원천 차단 */
+        .hero {
+          grid-template-columns: 1fr;
+          padding: 100px 24px 40px;
+          gap: 40px;
+          align-items: start;
+        }
+        .hero-text {
+          position: static;
+        } /* 세로 배치 흐름을 위해 고정 포지션 해제 */
+        .hero-title {
+          font-size: 42px;
+          margin-bottom: 20px;
+        }
+        .hero-bio {
+          font-size: 14px;
+          margin-bottom: 30px;
+        }
+
+        /* 프로필 카드 세트를 메인 글 아래쪽에 자연스럽게 안착 */
+        .hero-right {
+          display: flex;
+          width: 100%;
+          gap: 24px;
+          margin-top: 20px;
+        }
+        .profile-box,
+        .edu-box,
+        .skills-box {
+          width: 100%;
+          padding: 20px;
+        }
+
+        .works-section,
+        .contact-section,
+        footer {
+          padding: 60px 24px;
+        }
+        .work-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
+        }
+
+        /* 모달 팝업 구조 최적화 (2열 좌우 배치 -> 1열 상하 배치 전환) */
+        .modal {
+          grid-template-columns: 1fr;
+          width: 92vw;
+          max-height: 85vh;
+          overflow-y: auto;
+          border-radius: 16px;
+        }
+        .m-slider {
+          min-height: 260px;
+          height: 35vh;
+        }
+        .m-info {
+          padding: 24px 20px;
+        }
+        .m-title {
+          font-size: 20px;
+        }
+        .m-actions {
+          margin-top: 20px;
+          gap: 8px;
+        }
+        .btn-go,
+        .btn-zoom,
+        .btn-cl {
+          width: 100%;
+          justify-content: center;
+          padding: 10px;
+          font-size: 11px;
+        }
+        .m-close {
+          top: 12px;
+          right: 12px;
+          width: 28px;
+          height: 28px;
+          font-size: 12px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .hero-right {
+          flex-direction: column;
+          gap: 16px;
+        }
+        .work-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        } /* 모바일 세로 화면은 카드 한 장씩 시원하게 나열 */
+        .lb-slide {
+          padding: 16px;
+        }
+        .lb-close {
+          top: 16px;
+          right: 16px;
+          width: 36px;
+          height: 36px;
+          font-size: 16px;
+        }
+        .lb-count {
+          top: 24px;
+          left: 20px;
+          font-size: 12px;
+        }
       }
     </style>
   </head>
@@ -1227,7 +1322,7 @@
           title: '픽셀 리듬 게임\\n— Slime Bobo',
           desc: 'Unity로 제작한 픽셀 아트 리듬 게임입니다.',
           tags: ['Unity', 'Pixel Art', 'Rhythm'],
-          link: 'https://youtu. Korean/VCV5iUvkSfU',
+          link: 'https://youtu.be/VCV5iUvkSfU',
           stills: ['work02_1.jpg', 'work02_2.jpg', 'work02_3.jpg'],
         },
         {
